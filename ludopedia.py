@@ -27,8 +27,19 @@ class Jogo(SQLModel, table=True):
     nome_ludopedia: str
     link_imagem: str
 
-if __name__=='__main__':
-    engine = create_engine("sqlite:///leiloes_jogos.db")
+if __name__=='__main__':    
+    from dotenv import load_dotenv
+    import os
+
+    load_dotenv()
+    user=os.getenv('MYSQL_USER')
+    password=os.getenv('MYSQL_PASSWORD')
+    host=os.getenv('MYSQL_HOST')
+    port=os.getenv('MYSQL_PORT')
+    db=os.getenv('MYSQL_DATABASE')
+    database_url=f'mysql+pymysql://{user}:{password}@{host}:{port}/{db}'
+    
+    engine=create_engine(database_url)
     SQLModel.metadata.drop_all(engine)
     SQLModel.metadata.create_all(engine)
     lista_de_jogos=['Carson City Big Box', 'Wonderlans War', 'Root', 'Arcs', 'Barrage', 'Hues and Cues', 'Northern Pacific', 

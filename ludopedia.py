@@ -25,7 +25,7 @@ class Jogo(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     nome: str
     nome_ludopedia: str
-    link_imagem: str
+    link_imagem: str = Field(nullable=True)
 
 if __name__=='__main__':    
     from dotenv import load_dotenv
@@ -38,7 +38,7 @@ if __name__=='__main__':
     port=os.getenv('MYSQL_PORT')
     db=os.getenv('MYSQL_DATABASE')
     database_url=f'mysql+pymysql://{user}:{password}@{host}:{port}/{db}'
-    
+
     engine=create_engine(database_url)
     SQLModel.metadata.drop_all(engine)
     SQLModel.metadata.create_all(engine)

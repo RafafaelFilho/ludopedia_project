@@ -205,11 +205,11 @@ def add_auction(session, game, auction_id, link):
 # Functions: Schedule Job
 def job_17h():
     headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115 Safari/537.36"}
-    search_auction(headers)
+    search_auction(headers,'mysql')
     
 def job_07h():
     headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115 Safari/537.36"}
-    update_auction(headers)
+    update_auction(headers,'mysql')
     now=datetime.now()-timedelta(hours=3)
 
 # Scheduling

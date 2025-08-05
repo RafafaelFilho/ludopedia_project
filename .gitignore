@@ -4,6 +4,7 @@
 
 # Bancos de dados
 *.db
+ludopedia-ec2-key.pem
 
 # Cache
 __pycache__/

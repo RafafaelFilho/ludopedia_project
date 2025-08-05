@@ -30,7 +30,7 @@ class Jogo(SQLModel, table=True):
 if __name__=='__main__':
     engine = create_engine("sqlite:///leiloes_jogos.db")
     #SQLModel.metadata.drop_all(engine)
-    #SQLModel.metadata.create_all(engine)
+    SQLModel.metadata.create_all(engine)
     lista_de_jogos=['Carson City Big Box', 'Wonderlans War', 'Root', 'Arcs', 'Barrage', 'Hues and Cues', 'Northern Pacific', 
         'Marvel Zombies X-Men Resistance', 'Kingsburg 2 dition', 'Os Incriveis Parques de Miss Liz', 'Tammany Hall', 
         'Ponzi Scheme', 'Pax Pamir 2 edition', 'Nefertiti', 'Santiago', 'That Time You Killed Me', 'Irish Gauge', 'Automobile', 
@@ -51,10 +51,11 @@ if __name__=='__main__':
         for registro in registros:
             with Session(engine) as session:
                 j=Jogo(
-                    nome='Carson City Big Box',
-                    nome_ludopedia='carson-city-big-box'
+                    nome=registro[0],
+                    nome_ludopedia=registro[1]
                 )
                 session.add(j)
         session.commit()
+        print('tabelas criadas com sucesso')
     else:
         print('listas com quantidades diferentes')

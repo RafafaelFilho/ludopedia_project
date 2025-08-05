@@ -1,0 +1,14 @@
+# Arquivos de ambiente
+.env
+.venv/
+
+# Bancos de dados
+*.db
+
+# Cache
+__pycache__/
+
+# Outros arquivos
+teste.py
+*.pbix
+*.ipynb

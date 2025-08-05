@@ -11,5 +11,8 @@ __pycache__/
 
 # Outros arquivos
 teste.py
+exportar_csv.py
+ler_csv.py
+*.csv
 *.pbix
 *.ipynb

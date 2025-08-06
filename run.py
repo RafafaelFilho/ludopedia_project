@@ -171,7 +171,7 @@ def find_trs(game, headers):
             exc_info=True, 
             extra={
                 'id':game.id,
-                'game_name': game.name,
+                'game_name': game.nome,
                 'soup': soup.find('body')})
         return None
 
@@ -188,7 +188,7 @@ def auction_conference(session, tr, game):
             exc_info=True, 
             extra={
                 'id':game.id,
-                'game_name': game.name,
+                'game_name': game.nome,
                 'soup': tr})
         return True, None, None
     

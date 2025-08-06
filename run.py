@@ -1,40 +1,16 @@
-from sqlmodel   import SQLModel, Field, create_engine, Session, select, text
+from sqlmodel   import Session, select
 from datetime   import datetime, timedelta
 from bs4        import BeautifulSoup
-from ludopedia  import Leilao, Jogo
-from dotenv     import load_dotenv
+from ludopedia  import Leilao, Jogo, conectEngine
 from logger     import logger_setup
-import os
 import requests
 import schedule
 import time
 import logging
 
-# Functions: General group
-def conectEngine(sql):
-    logger_setup()
-    try:
-        if sql=='mysql':
-            load_dotenv()
-            user=os.getenv('MYSQL_USER')
-            password=os.getenv('MYSQL_PASSWORD')
-            host=os.getenv('MYSQL_HOST')
-            port=os.getenv('MYSQL_PORT')
-            db=os.getenv('MYSQL_DATABASE')
-            database_url=f'mysql+pymysql://{user}:{password}@{host}:{port}/{db}'
-            engine=create_engine(database_url)
-        else:
-            engine=create_engine("sqlite:///leiloes_jogos.db")
-        with Session(engine) as session:
-            session.exec(text('SELECT 1'))
-        logging.debug('Database connected')
-        return engine
-    except:
-        logging.error('Error connecting to database', exc_info=True) 
-        return None
-
 # Functions: Update Auctions group
 def update_auction(headers, sql):
+    logger_setup()
     now=datetime.now()-timedelta(hours=3)
     engine=conectEngine(sql)
     if engine:
@@ -132,11 +108,7 @@ def finish_auction(auction, soup, now):
                 'auction_id': auction.id_leilao,
                 'link': auction.link_leilao,
                 'soup': soup.find('body')})
-
-
-
-
-
+        
 # Functions: Search Auctions group
 def search_auction(headers, sql):
     engine=conectEngine(sql)
@@ -144,11 +116,13 @@ def search_auction(headers, sql):
         with Session(engine) as session:
             games=download_games(session)
             for game in games:
+                logging.debug(game.nome)
                 trs=find_trs(game, headers)
                 if trs:
                     for tr in trs:
                         auction_conf, auction_id, link=auction_conference(session, tr, game)
                         if not auction_conf:
+                            logging.debug('Auction found')
                             add_auction(session, game, auction_id, link)
             session.commit()
         logging.info('Search Auction: Finished')
@@ -157,7 +131,6 @@ def download_games(session):
     games=session.exec(select(Jogo)).all()
     logging.debug('Games downloaded')
     return games
-
 def find_trs(game, headers):
     url = f'https://ludopedia.com.br/jogo/{game.nome_ludopedia}?v=anuncios'
     response = requests.get(url, headers=headers)
@@ -167,31 +140,32 @@ def find_trs(game, headers):
         return trs
     else:
         logging.error(
-            'This page is differente', 
+            'Search Acution: This page is differente', 
             exc_info=True, 
             extra={
+                'function': 'find_trs',
                 'id':game.id,
                 'game_name': game.nome,
                 'soup': soup.find('body')})
         return None
-
 def auction_conference(session, tr, game):
     a=tr.find('a')
-    if a and a.text=='Leilão':
-        link=a.get('href')
-        auction_id=link.split('/')[4]
-        auction_conf=session.exec(select(Leilao).where(Leilao.id_leilao==auction_id)).first()
-        return auction_conf, auction_id, link
+    if a:
+        if a.text=='Leilão':
+            link=a.get('href')
+            auction_id=link.split('/')[4]
+            auction_conf=session.exec(select(Leilao).where(Leilao.id_leilao==auction_id)).first()
+            return auction_conf, auction_id, link
     else:
         logging.error(
-            'This page is differente', 
+            'Search Acution: This page is differente', 
             exc_info=True, 
             extra={
+                'function': 'find_trs',
                 'id':game.id,
                 'game_name': game.nome,
-                'soup': tr})
-        return True, None, None
-    
+                'tr': tr})
+    return True, None, None
 def add_auction(session, game, auction_id, link):
     l=Leilao(
         id_leilao=auction_id,
@@ -201,7 +175,7 @@ def add_auction(session, game, auction_id, link):
         data_alteracao=datetime.now()-timedelta(hours=3)
     )
     session.add(l)
-
+    
 # Functions: Schedule Job
 def job_17h():
     headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115 Safari/537.36"}
@@ -212,15 +186,9 @@ def job_07h():
     update_auction(headers,'mysql')
     now=datetime.now()-timedelta(hours=3)
 
-# Scheduling
-schedule.every().day.at('20:00').do(job_17h)
-schedule.every().day.at('10:00').do(job_07h)
-
-# Main loop
-while True:
-    schedule.run_pending()
-    time.sleep(1)
-
-#headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115 Safari/537.36"}
-#search_auction(headers, 'sqlite')
-#update_auction(headers, 'sqlite')
+if __name__=='__main__':
+    schedule.every().day.at('20:00').do(job_17h)
+    schedule.every().day.at('10:00').do(job_07h)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)

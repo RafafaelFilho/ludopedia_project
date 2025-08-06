@@ -1,6 +1,9 @@
-from sqlmodel import SQLModel, Field, create_engine, Session, select
-from typing import Optional
-from datetime import datetime
+from sqlmodel   import SQLModel, Field, create_engine, Session, text
+from dotenv     import load_dotenv
+from datetime   import datetime
+from typing     import Optional
+import logging
+import os
 
 class Leilao(SQLModel, table=True):
     __tablename__ = "leilao"
@@ -26,6 +29,28 @@ class Jogo(SQLModel, table=True):
     nome: str
     nome_ludopedia: str
     link_imagem: str = Field(nullable=True)
+
+def conectEngine(sql):
+    try:
+        if sql=='mysql':
+            load_dotenv()
+            user=os.getenv('MYSQL_USER')
+            password=os.getenv('MYSQL_PASSWORD')
+            host=os.getenv('MYSQL_HOST')
+            port=os.getenv('MYSQL_PORT')
+            db=os.getenv('MYSQL_DATABASE')
+            database_url=f'mysql+pymysql://{user}:{password}@{host}:{port}/{db}'
+            engine=create_engine(database_url)
+        else:
+            engine=create_engine("sqlite:///leiloes_jogos.db")
+        with Session(engine) as session:
+            session.exec(text('SELECT 1'))
+        logging.debug('Database connected')
+        return engine
+    except:
+        logging.error('Error connecting to database', exc_info=True) 
+        return None
+
 
 if __name__=='__main__':    
     from dotenv import load_dotenv

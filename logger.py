@@ -7,7 +7,7 @@ import os
 def logger_setup():
     load_dotenv()
     sentry_logger=LoggingIntegration(
-        level=logging.DEBUG, 
+        level=logging.INFO, 
         event_level=logging.INFO
     )
 

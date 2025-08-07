@@ -12,6 +12,7 @@ __pycache__/
 # Outros arquivos
 teste.py
 exportar_csv.py
+atualizar_sqlite.py
 ler_csv.py
 *.csv
 *.pbix

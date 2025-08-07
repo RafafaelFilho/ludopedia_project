@@ -47,7 +47,7 @@ def update_auction(headers, sql):
                                 'link': auction.link_leilao,
                                 'soup': soup.find('body')})
             session.commit()
-        logging.info('Update Auction Finished')
+        logging.info('Update Auction: Finished')
 
 def download_auctions(session):
     auctions=session.exec(select(Leilao).where(Leilao.status=='em andamento')).all ()

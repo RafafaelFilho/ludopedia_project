@@ -46,7 +46,7 @@ def auctionConference(engine, tr, game):
             link=a.get('href')
             auc_id=link.split('/')[4]
             validation=downloadAuction(engine, auc_id)
-            if not validation:
+            if validation:
                 now=datetime.now()-timedelta(hours=3)
                 new_auc={
                     'id_leilao':auc_id,

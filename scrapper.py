@@ -1,14 +1,9 @@
-from sqlmodel   import create_engine, Session, text, select
 from datetime   import datetime, timedelta
 from models     import downloadAuction
 from bs4        import BeautifulSoup
-from models     import Leilao, Jogo
 import logging
 import requests
 import sys
-
-# searchAuctions
-
 
 def findTrs(game, headers):
     try:
@@ -65,11 +60,6 @@ def auctionConference(engine, tr, game):
                 logging.debug('searchAuction: New auction were found')
                 return new_auc
     return None
-
-
-
-# updateAuctions
-
 
 def updateSelectionProcess(auction, headers):
     response = requests.get(auction.link_leilao, headers=headers)
@@ -192,5 +182,3 @@ def finishInfo(auction, soup):
             }
         )
         sys.exit()
-
-

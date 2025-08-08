@@ -32,13 +32,13 @@ class Jogo(SQLModel, table=True):
 def connectEngine(main_function):
     try:
         load_dotenv()
-        #user=os.getenv('MYSQL_USER')
-        #password=os.getenv('MYSQL_PASSWORD')
-        #host=os.getenv('MYSQL_HOST')
-        #port=os.getenv('MYSQL_PORT')
-        #db=os.getenv('MYSQL_DATABASE')
-        #database_url=f'mysql+pymysql://{user}:{password}@{host}:{port}/{db}'
-        database_url = "sqlite:///leiloes_jogos.db"
+        user=os.getenv('MYSQL_USER')
+        password=os.getenv('MYSQL_PASSWORD')
+        host=os.getenv('MYSQL_HOST')
+        port=os.getenv('MYSQL_PORT')
+        db=os.getenv('MYSQL_DATABASE')
+        database_url=f'mysql+pymysql://{user}:{password}@{host}:{port}/{db}'
+        #database_url = "sqlite:///leiloes_jogos.db"
         engine=create_engine(database_url)
         with Session(engine) as session:
             session.exec(text('SELECT 1'))
@@ -113,5 +113,5 @@ def saveUpdates(engine, auction, info):
     with Session(engine) as session:
         for key, value in info.items():
             setattr(auction,key,value)
-        #session.add(auction)
-        #session.commit()
+        session.add(auction)
+        session.commit()

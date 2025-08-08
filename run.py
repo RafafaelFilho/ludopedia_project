@@ -6,6 +6,7 @@ import logging
 import time
 
 def searchAuctions(headers):
+    logger_setup()
     auctions=[]
     engine=connectEngine('searchAuctions')
     games=downloadGames(engine)
@@ -32,6 +33,7 @@ def searchAuctions(headers):
     )
 
 def updateAuctions(headers):
+    logger_setup()
     engine=connectEngine('updateAuctions')
     auctions=downloadAuctions(engine)
     for auction in auctions:
@@ -52,7 +54,6 @@ def updateAuctions(headers):
     )
 
 if __name__=='__main__':
-    logger_setup()
     headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115 Safari/537.36"}
     schedule.every().day.at('10:00').do(lambda: updateAuctions(headers))
     schedule.every().day.at('20:00').do(lambda: searchAuctions(headers))

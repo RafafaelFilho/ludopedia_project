@@ -55,9 +55,8 @@ def updateAuctions(headers):
 
 if __name__=='__main__':
     headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115 Safari/537.36"}
-#    schedule.every().day.at('10:00').do(lambda: updateAuctions(headers))
-#    schedule.every().day.at('20:00').do(lambda: searchAuctions(headers))
-#    while True:
-#        schedule.run_pending()
-#        time.sleep(1)
-    searchAuctions(headers)
+    schedule.every().day.at('10:00').do(lambda: updateAuctions(headers))
+    schedule.every().day.at('20:00').do(lambda: searchAuctions(headers))
+    while True:
+        schedule.run_pending()
+        time.sleep(1)

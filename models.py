@@ -108,8 +108,10 @@ def downloadAuction(engine, auc_id):
     with Session(engine) as session:
         query=session.exec(select(Leilao).where(Leilao.id_leilao==auc_id)).first()
         if query:
+            logging.debug('searchAuction: Auction already exists in the database (returng False)')
             return False
         else:
+            logging.debug("searchAuction: Auction doesn't exist in the database (returning True)")
             return True
     
 def saveUpdates(engine, auction, info):

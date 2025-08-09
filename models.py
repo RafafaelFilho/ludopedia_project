@@ -92,8 +92,9 @@ def addAuction(engine, auctions: list):
 def downloadAuctions(engine):
     try:
         with Session(engine) as session:
-            auctions=session.exec(select(Leilao).where(Leilao.status=='em andamento')).all ()
+            auctions=session.exec(select(Leilao).where(Leilao.status=='em andamento')).all()
         logging.debug('updatehAuctions: Auctions downloaded')
+        return auctions
     except:
         logging.critical(
             'Error to download', 

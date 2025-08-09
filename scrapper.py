@@ -47,7 +47,7 @@ def auctionConference(engine, tr, game):
             auc_id=link.split('/')[4]
             validation=downloadAuction(engine, auc_id)
             if validation:
-                now=datetime.now()-timedelta(hours=3)
+                now=datetime.now()-timedelta(hours=3) 
                 new_auc={
                     'id_leilao':auc_id,
                     'id_jogo':game.id,

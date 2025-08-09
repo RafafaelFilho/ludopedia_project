@@ -94,10 +94,6 @@ def downloadAuctions(engine):
         with Session(engine) as session:
             auctions=session.exec(select(Leilao).where(Leilao.status=='em andamento')).all ()
         logging.debug('updatehAuctions: Auctions downloaded')
-        if auction:
-            return False
-        else:
-            return True
     except:
         logging.critical(
             'Error to download', 
@@ -109,8 +105,11 @@ def downloadAuctions(engine):
         ) 
 def downloadAuction(engine, auc_id):
     with Session(engine) as session:
-        validation=session.exec(select(Leilao).where(Leilao.id_leilao==auc_id)).first()
-    return validation 
+        query=session.exec(select(Leilao).where(Leilao.id_leilao==auc_id)).first()
+        if query:
+            return False
+        else:
+            return True
     
 def saveUpdates(engine, auction, info):
     with Session(engine) as session:

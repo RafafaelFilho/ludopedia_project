@@ -17,8 +17,8 @@ def searchAuctions(headers):
                 new_auction=auctionConference(engine, tr, game)
                 if new_auction:
                     auctions.append(new_auction)
-            if auctions:
-                addAuction(engine, auctions)
+    if auctions:
+        addAuction(engine, auctions)
     logging.info(
         'searchAuction: Process finished',
         extra={

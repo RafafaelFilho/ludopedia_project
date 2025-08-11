@@ -3,3 +3,4 @@ fastapi==0.116.1
 python-dotenv==1.1.1
 PyMySQL==1.1.1
 sqlmodel==0.0.24
+pwdlib==0.2.1

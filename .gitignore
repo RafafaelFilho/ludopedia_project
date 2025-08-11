@@ -2,9 +2,12 @@
 .env
 .venv/
 
-# Bancos de dados
+# Tipos de arquivo para não entrar
 *.db
-ludopedia-ec2-key.pem
+*.pem
+*.csv
+*.pbix
+*.ipynb
 
 # Cache
 __pycache__/
@@ -15,6 +18,4 @@ exportar_csv.py
 atualizar_sqlite.py
 ler_csv.py
 info.txt
-*.csv
-*.pbix
-*.ipynb
+leitura_api.py

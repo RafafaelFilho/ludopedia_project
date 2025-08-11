@@ -27,15 +27,22 @@ class Jogo(SQLModel, table=True):
     nome: str
     nome_ludopedia: str
 
+class LeilaoUpdate(SQLModel):
+    id_leilao: Optional[int] = None
+    status: Optional[str] = None
+    observacoes: Optional[str] = None
+    local: Optional[str] = None
+    estado_item: Optional[bool] = None
+    tipo: Optional[bool] = None
 
-#load_dotenv()
-#user=os.getenv('MYSQL_USER')
-#password=os.getenv('MYSQL_PASSWORD')
-#host=os.getenv('MYSQL_HOST')
-#port=os.getenv('MYSQL_PORT')
-#db=os.getenv('MYSQL_DATABASE')
-#database_url=f'mysql+pymysql://{user}:{password}@{host}:{port}/{db}'
-database_url = "sqlite:///C:/Users/rfari/Documents/repos/projetos/analise_jogos_tabuleiro/leiloes_jogos.db"
+load_dotenv()
+user=os.getenv('MYSQL_USER')
+password=os.getenv('MYSQL_PASSWORD')
+host=os.getenv('MYSQL_HOST')
+port=os.getenv('MYSQL_PORT')
+db=os.getenv('MYSQL_DATABASE')
+database_url=f'mysql+pymysql://{user}:{password}@{host}:{port}/{db}'
+#database_url = "sqlite:///C:/Users/rfari/Documents/repos/projetos/analise_jogos_tabuleiro/leiloes_jogos.db"
 engine=create_engine(database_url)
 
 def getSession():

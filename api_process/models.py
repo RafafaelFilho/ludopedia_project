@@ -27,6 +27,13 @@ class Jogo(SQLModel, table=True):
     nome: str
     nome_ludopedia: str
 
+class LeilaoUpdate(SQLModel):
+    id_leilao: Optional[int] = None
+    status: Optional[str] = None
+    observacoes: Optional[str] = None
+    local: Optional[str] = None
+    estado_item: Optional[bool] = None
+    tipo: Optional[bool] = None
 
 load_dotenv()
 user=os.getenv('MYSQL_USER')

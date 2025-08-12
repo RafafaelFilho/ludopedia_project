@@ -42,9 +42,13 @@ Preciso de:
 	8. Criar RDS
 5. Desenvolver o Power BI
 ## Resultado
-- Desenvolvendo
+- Dados sendo gerados
 ## Melhorias
 1. Solução para agendamento de processo.
 	- Atual: utilizando a biblioteca schedulle para agendamento. 
 	- Melhoria: utilizar Airflow no EC2 vai ser uma solução muito mais robusta e com mais controle sobre o processo. 
 	- Motivo do não desenvolvimento: não foi utilizado pois a instancia EC2 no freetier não suporta o Airflow.
+2. Segurança na API
+	- Atual: API rodando no Uvicorn somente
+	- Melhoria: Utilizar processos de validação e autenticação com tokens e hashes para segurança da API
+	- Motivo do não desenvolvimento: aprendendo
